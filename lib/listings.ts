@@ -1,3 +1,4 @@
+import { CATEGORIES } from "@/constants/listing";
 import { SAMPLE_LISTINGS } from "@/constants/sample-listings";
 import type { Listing, ListingFilters } from "@/types/listing";
 
@@ -23,4 +24,13 @@ export function latestListings(count: number): Listing[] {
 
 export function getListing(id: string): Listing | undefined {
   return SAMPLE_LISTINGS.find((item) => item.id === id);
+}
+
+/** Counts per category for the filters, ignoring the chosen category so every option shows what it would give. */
+export function countByCategory(filters: ListingFilters, listings: Listing[] = SAMPLE_LISTINGS) {
+  const rest = filterListings(listings, { ...filters, category: undefined });
+  return {
+    all: rest.length,
+    byCategory: CATEGORIES.map((category) => ({ category, count: rest.filter((item) => item.category === category).length })),
+  };
 }

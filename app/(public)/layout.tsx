@@ -1,12 +1,5 @@
-import { SiteFooter } from "@/components/shares/site-footer";
-import { TopBar } from "@/components/home/top-bar";
+import { SiteShell } from "@/components/shares/site-shell";
 
 export default function PublicLayout({ children }: LayoutProps<"/">) {
-  return (
-    <>
-      <TopBar />
-      <div className="flex-1">{children}</div>
-      <SiteFooter />
-    </>
-  );
+  return <SiteShell>{children}</SiteShell>;
 }

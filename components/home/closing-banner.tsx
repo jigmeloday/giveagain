@@ -1,17 +1,12 @@
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { GiveButton } from "@/components/give/give-button";
 
 export function ClosingBanner() {
   return (
-    <section className="flex flex-col gap-10 bg-primary p-6 text-primary-foreground sm:p-10">
-      <h2 className="max-w-3xl text-[clamp(36px,6vw,72px)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-        Someone nearby needs what you don&rsquo;t.
-      </h2>
-      <Link href="/give" className={buttonVariants({ size: "lg", variant: "outline", className: "w-fit border-primary-foreground hover:text-foreground" })}>
-        Give something away
-        <Plus aria-hidden />
-      </Link>
+    <section className="bg-primary px-6 py-14 text-primary-foreground sm:px-10 sm:py-20">
+      <div className="mx-auto flex max-w-3xl flex-col items-start gap-6">
+        <h2 className="text-[clamp(32px,5vw,56px)]">Someone nearby could use what you have.</h2>
+        <GiveButton size="lg" variant="outline" className="border-primary-foreground hover:text-foreground" />
+      </div>
     </section>
   );
 }

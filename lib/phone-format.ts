@@ -16,3 +16,9 @@ export function withDialCode(digits: string): string {
 export function groupDigits(digits: string): string {
   return digits.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
 }
+
+/** "+97517123456" to "+975 17 12 34 56". Returns the input unchanged if it isn't a Bhutan number. */
+export function formatPhone(e164: string): string {
+  if (!e164.startsWith(BHUTAN_DIAL_CODE)) return e164;
+  return `${BHUTAN_DIAL_CODE} ${groupDigits(nationalDigits(e164))}`;
+}

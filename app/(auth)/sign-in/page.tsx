@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
-import { AuthCard } from "@/components/auth/auth-card";
-import { SignInForm } from "@/components/auth/sign-in-form";
-import { safeNext } from "@/lib/safe-next";
+import { Suspense } from "react";
+import { AuthFallback } from "@/components/auth/auth-fallback";
+import { SignInContent } from "@/components/auth/sign-in-content";
 
 export const metadata: Metadata = { title: "Sign in | GiveAgain" };
 
-export default async function SignInPage({ searchParams }: PageProps<"/sign-in">) {
-  const next = safeNext((await searchParams).next);
-  const query = next === "/" ? "" : `?next=${encodeURIComponent(next)}`;
-
+export default function SignInPage({ searchParams }: PageProps<"/sign-in">) {
   return (
-    <AuthCard
-      title="Welcome back"
-      intro="Sign in to give something away or ask for an item."
-      footer={{ text: "New here?", label: "Create an account", href: `/sign-up${query}` }}
-    >
-      <SignInForm next={next} />
-    </AuthCard>
+    <Suspense fallback={<AuthFallback />}>
+      <SignInContent searchParams={searchParams} />
+    </Suspense>
   );
 }

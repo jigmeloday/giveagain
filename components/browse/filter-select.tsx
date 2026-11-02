@@ -13,7 +13,7 @@ type FilterSelectProps = {
 export function FilterSelect({ name, label, allLabel, options, defaultValue, className }: FilterSelectProps) {
   return (
     <label className={cn("flex flex-col gap-1", className)}>
-      <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">{label}</span>
+      <span className="text-sm text-muted-foreground">{label}</span>
       <select
         name={name}
         defaultValue={defaultValue ?? ""}

@@ -3,12 +3,12 @@
 import { FormError } from "@/components/auth/form-error";
 import { SubmitButton } from "@/components/auth/submit-button";
 import { Input } from "@/components/shares/input";
-import { useAuthForm } from "@/hooks/use-auth-form";
+import { useSubmitForm } from "@/hooks/use-submit-form";
 import { authActions } from "@/lib/auth-actions";
 import { forgotPasswordSchema } from "@/schemas/auth";
 
 export function ForgotPasswordForm() {
-  const { form, onSubmit, formError, done, isSubmitting } = useAuthForm({
+  const { form, onSubmit, formError, done, isSubmitting } = useSubmitForm({
     schema: forgotPasswordSchema,
     defaultValues: { email: "" },
     submit: authActions.forgotPassword,

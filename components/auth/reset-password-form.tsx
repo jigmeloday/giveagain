@@ -5,12 +5,12 @@ import { FormError } from "@/components/auth/form-error";
 import { SubmitButton } from "@/components/auth/submit-button";
 import { PasswordInput } from "@/components/shares/password-input";
 import { buttonVariants } from "@/components/ui/button";
-import { useAuthForm } from "@/hooks/use-auth-form";
+import { useSubmitForm } from "@/hooks/use-submit-form";
 import { authActions } from "@/lib/auth-actions";
 import { resetPasswordSchema } from "@/schemas/auth";
 
 export function ResetPasswordForm({ token }: { token: string }) {
-  const { form, onSubmit, formError, done, isSubmitting } = useAuthForm({
+  const { form, onSubmit, formError, done, isSubmitting } = useSubmitForm({
     schema: resetPasswordSchema,
     defaultValues: { password: "", confirm: "" },
     submit: (values) => authActions.resetPassword({ ...values, token }),

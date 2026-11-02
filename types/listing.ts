@@ -13,6 +13,17 @@ export type Listing = {
   /** ISO time in UTC. */
   postedAt: string;
   status: "available" | "reserved";
+  /** Photo URLs, whole item first. At least 3 once real listings exist. */
+  photos?: string[];
+  /** How many people have asked for it. */
+  askingCount: number;
+  size?: string;
+  /** When it can be collected, e.g. "Weekday evenings". */
+  collection?: string;
+  /** Anything to know before coming, e.g. "Needs two people to carry". */
+  headsUp?: string;
+  /** First name and initial only. */
+  giver: { name: string; given: number; since: string };
 };
 
 export type ListingFilters = {
@@ -20,4 +31,10 @@ export type ListingFilters = {
   category?: string;
   dzongkhag?: string;
   condition?: string;
+};
+
+export type ItemPhoto = {
+  /** Missing until the photo loads or exists: a placeholder is shown instead. */
+  src?: string;
+  alt: string;
 };

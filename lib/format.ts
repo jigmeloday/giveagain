@@ -13,3 +13,8 @@ export function timeAgo(iso: string, now: Date = new Date()): string {
   if (days < 7) return `${days} days ago`;
   return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Thimphu" }).format(new Date(iso));
 }
+
+/** Fixed date in Bhutan time, e.g. "2 Nov 2026". Safe to render ahead of time (no clock). */
+export function formatDate(iso: string): string {
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Thimphu" }).format(new Date(iso));
+}

@@ -6,7 +6,9 @@ import { Label } from "@/components/ui/label";
 import { useFieldIds } from "@/hooks/use-field-ids";
 import type { FieldProps } from "@/types/field";
 
-type CheckboxProps = FieldProps & {
+type CheckboxProps = Omit<FieldProps, "label"> & {
+  /** Can include a link. */
+  label: React.ReactNode;
   id?: string;
   name?: string;
   checked?: boolean;

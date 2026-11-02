@@ -12,8 +12,8 @@ type Options<T extends FieldValues> = {
   onDone?: () => void;
 };
 
-/** Form state for the auth pages: validation, a top-level error, and a done flag. */
-export function useAuthForm<T extends FieldValues>({ schema, defaultValues, submit, onDone }: Options<T>) {
+/** Form state for submit-style forms: validation, a top-level error, and a done flag. */
+export function useSubmitForm<T extends FieldValues>({ schema, defaultValues, submit, onDone }: Options<T>) {
   const [formError, setFormError] = useState<string>();
   const [done, setDone] = useState(false);
   const form = useForm<T, unknown, T>({ resolver: zodResolver(schema), mode: "onTouched", defaultValues });

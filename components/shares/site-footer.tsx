@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GiveButton } from "@/components/give/give-button";
 import { FOOTER_LINKS } from "@/constants/home";
 
 export function SiteFooter() {
@@ -9,6 +10,7 @@ export function SiteFooter() {
         {FOOTER_LINKS.map((link) => (
           <Link key={link.href} href={link.href} className="hover:underline">{link.label}</Link>
         ))}
+        <GiveButton variant="link" className="h-auto p-0 text-foreground">Give something</GiveButton>
       </nav>
     </footer>
   );

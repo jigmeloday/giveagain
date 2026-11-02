@@ -12,6 +12,7 @@ export const signUpSchema = z.object({
   name: z.string().trim().min(2, "Enter your name.").max(60, "Keep your name under 60 characters."),
   email,
   password,
+  agree: z.boolean().refine((value) => value, "Please agree to the community guidelines."),
 });
 
 export const forgotPasswordSchema = z.object({ email });

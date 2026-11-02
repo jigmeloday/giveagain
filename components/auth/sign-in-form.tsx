@@ -6,13 +6,13 @@ import { FormError } from "@/components/auth/form-error";
 import { SubmitButton } from "@/components/auth/submit-button";
 import { Input } from "@/components/shares/input";
 import { PasswordInput } from "@/components/shares/password-input";
-import { useAuthForm } from "@/hooks/use-auth-form";
+import { useSubmitForm } from "@/hooks/use-submit-form";
 import { authActions } from "@/lib/auth-actions";
 import { signInSchema } from "@/schemas/auth";
 
 export function SignInForm({ next }: { next: string }) {
   const router = useRouter();
-  const { form, onSubmit, formError, isSubmitting } = useAuthForm({
+  const { form, onSubmit, formError, isSubmitting } = useSubmitForm({
     schema: signInSchema,
     defaultValues: { email: "", password: "" },
     submit: authActions.signIn,

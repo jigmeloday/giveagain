@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Suspense } from "react";
+import { AccountLink } from "@/components/home/account-link";
+import { GiveButton } from "@/components/give/give-button";
 import { NAV_LINKS } from "@/constants/home";
 
 export function TopBar() {
@@ -16,10 +17,10 @@ export function TopBar() {
             {link.label}
           </Link>
         ))}
-        <Link href="/give" className={buttonVariants()}>
-          Give something
-          <Plus aria-hidden />
-        </Link>
+        <Suspense fallback={null}>
+          <AccountLink />
+        </Suspense>
+        <GiveButton>Give something</GiveButton>
       </nav>
     </header>
   );

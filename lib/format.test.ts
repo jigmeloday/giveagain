@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { timeAgo } from "@/lib/format";
+import { formatDate, timeAgo } from "@/lib/format";
 
 const now = new Date("2026-11-02T12:00:00Z");
 
@@ -14,5 +14,11 @@ describe("timeAgo", () => {
 
   it("shows a Thimphu date after a week", () => {
     expect(timeAgo("2026-10-20T00:00:00Z", now)).toBe("20 Oct 2026");
+  });
+});
+
+describe("formatDate", () => {
+  it("uses the Thimphu day, not UTC", () => {
+    expect(formatDate("2026-11-02T20:00:00Z")).toBe("3 Nov 2026");
   });
 });

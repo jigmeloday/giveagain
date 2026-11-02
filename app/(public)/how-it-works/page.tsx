@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { GiveButton } from "@/components/give/give-button";
 import { Faq } from "@/components/how/faq";
 import { Safety } from "@/components/how/safety";
 import { StepList } from "@/components/how/step-list";
@@ -29,10 +30,7 @@ export default function HowItWorksPage() {
       <Safety />
       <Faq />
       <section className="flex flex-col gap-3 p-6 sm:flex-row sm:p-10">
-        <Link href="/give" className={buttonVariants({ size: "lg" })}>
-          Give something away
-          <Plus aria-hidden />
-        </Link>
+        <GiveButton size="lg" />
         <Link href="/browse" className={buttonVariants({ size: "lg", variant: "outline" })}>
           See what&rsquo;s free nearby
           <ArrowRight aria-hidden />

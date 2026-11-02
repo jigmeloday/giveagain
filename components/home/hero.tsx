@@ -1,33 +1,23 @@
-import Link from "next/link";
-import { ArrowRight, Plus } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { PhotoPlaceholder } from "@/components/shares/photo-placeholder";
+import { GiveButton } from "@/components/give/give-button";
+import { HeroSearch } from "@/components/home/hero-search";
 
 export function Hero() {
   return (
-    <section className="grid border-b border-line md:grid-cols-2">
-      <div className="flex flex-col justify-between gap-10 border-b border-line p-6 sm:p-10 md:border-r md:border-b-0">
-        <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-primary-ink">Free, for everyone in Bhutan</p>
-        <div className="flex flex-col gap-6">
-          <h1 className="text-[clamp(44px,8vw,88px)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-            Give it away. Don&rsquo;t throw it away.
-          </h1>
-          <p className="max-w-md text-base">
-            Have something you no longer need? Pass it to a neighbour who does. Everything here is free.
+    <section className="border-b border-line px-6 py-14 sm:px-10 sm:py-20">
+      <div className="mx-auto flex max-w-3xl flex-col gap-8">
+        <div className="flex flex-col gap-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-primary-ink">Free things for neighbours in Bhutan</p>
+          <h1 className="text-[clamp(40px,7vw,76px)]">Give what you don&rsquo;t need. Find what you do.</h1>
+          <p className="max-w-xl text-lg text-muted-foreground">
+            Everything here is free. Pass things on to people nearby instead of throwing them away.
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/give" className={buttonVariants({ size: "lg" })}>
-              Give something away
-              <Plus aria-hidden />
-            </Link>
-            <Link href="/browse" className={buttonVariants({ size: "lg", variant: "outline" })}>
-              See what&rsquo;s free nearby
-              <ArrowRight aria-hidden />
-            </Link>
-          </div>
+        </div>
+        <HeroSearch />
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span className="text-sm text-muted-foreground">Have something to pass on?</span>
+          <GiveButton variant="outline" />
         </div>
       </div>
-      <PhotoPlaceholder caption="Photo: a neighbour handing over a chair" className="min-h-72 md:min-h-[480px]" />
     </section>
   );
 }
