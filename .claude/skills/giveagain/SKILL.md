@@ -23,7 +23,7 @@ Listing states: `pending` (awaiting moderation) → `available` → `reserved` �
 
 ## Rules that must hold
 
-- **No prices, no money, no payment fields, no "sell" wording.** Every item shows a FREE badge.
+- **No prices, no money, no payment fields, no "sell" wording.** Every item is clearly marked FREE.
 - Item cards show name, approximate area (e.g. "Motithang, Thimphu"), condition and age. **Never** show a precise address publicly. Share it only after the giver accepts a request.
 - Location is chosen from a Dzongkhag list (and area within it). Bhutan context: Dzongkhags, Thimphu, Paro, etc. Contact is likely phone-first, so consider phone/WhatsApp-friendly flows. Mobile-first: most users are on phones with variable connections.
 - Language: English only, plain, warm, short (see `giveagain-content`).
@@ -33,18 +33,20 @@ Listing states: `pending` (awaiting moderation) → `available` → `reserved` �
 
 ## Design system
 
-Defined in [app/globals.css](../../../app/globals.css) as tokens. Light only: there is **no dark mode or theme toggle**. Do not add one.
+Defined in [app/globals.css](../../../app/globals.css) as tokens. Light only: there is **no dark mode or theme toggle**. Do not add one. Direction comes from the owner's reference design: editorial and bold, hard edges, a visible line grid, one orange accent. Nothing is for sale, so it must not look like a shop.
 
-- Feel: clean and familiar like an online store, but nothing is for sale. Lots of white space, one strong green for actions, a yellow FREE badge on every item.
-- Colors (use the Tailwind token, not raw hex): white page, `mist` panels, `chip` condition tags, `border` dividers, `primary` green `#17603A` for actions and links (`green-dark` on hover), `pine` for top bar and footer, `mint` for icon circles, `free` yellow only for the FREE badge and the main banner button, `muted-foreground` slate for meta text, `destructive` red for errors only.
-- Type: Figtree. Weight does the work: 800 headings, 700 labels and buttons, 400 body. Sizes: hero 50, section 30, card title 15, body 16, meta 13.
-- Radii: 4 badges, 8 buttons and fields, 12 cards and photos, 16 banners and sliders. Light borders separate things; a small shadow (`shadow-float`) only on floating buttons over photos.
-- Spacing scale: 4, 8, 12, 16, 20, 24, 32, 40, 56, 72.
-- Primary button "Give something away" (filled green); secondary "Ask for it — free" (green outline). Search field has a green border with a green search button attached.
-- Errors: red border plus a short helpful message below the field (e.g. "Choose where the item can be collected.").
-- **Item card:** square photo, yellow FREE badge top-left, save heart top-right, then name, approximate area, condition tag and age ("2 hours ago"). Never a price.
-- **Photos:** real daylight photos of the actual item, whole item first. WebP at 480 / 960 / 1440 px, lazy-loaded behind a grey placeholder. Use `next/image`.
-- Contrast: all text pairs must pass 4.5:1.
+- **Feel:** warm grey paper, near-black ink, heavy tight headlines, thin hard lines dividing the page into cells, mono uppercase labels. Lots of space inside cells. No shadows, no gradients, no rounded corners.
+- **Colors (use the Tailwind token, not raw hex):** `background` warm grey page (`#F1F1EF`), `foreground` ink, `mist` panels and photo placeholders, `line` (alias of `border`) for the grid and dividers, `primary` orange `#D93A12` for fills and big banners (white text on it is 4.6:1), `primary-dark` for hover, `primary-ink` for small orange text on the page (5.3:1; plain `primary` fails 4.5:1 there), `muted-foreground` for meta text, `destructive` dark red for errors only. Field borders use `input` (darker than `line`).
+- **Type:** Archivo for everything (`font-sans`), JetBrains Mono for labels (`font-mono`). Headlines weight 800 with tracking about `-0.04em` and line-height about 0.95 (hero scales with `clamp`, roughly 44 to 88px); card titles 700 at 15px; body 400 at 16px; labels mono, 11px, uppercase, `tracking-[0.08em]`, usually `text-primary-ink` (the kicker above a headline, the category on a card, step numbers).
+- **Shape:** radius is **0 everywhere** (the radius tokens are zeroed, so `rounded-*` stays square). Separate things with 1px `border-line` borders on cells, not cards with shadows.
+- **Spacing scale:** 4, 8, 12, 16, 20, 24, 32, 40, 56, 72.
+- **Buttons:** at least 44px tall, bold text, an arrow or plus icon on the right for main actions. Primary "Give something away" = filled orange. Secondary "See what's free nearby" = transparent with a dark ink border. Text links are `primary-ink`, underlined on hover.
+- **Page rhythm:** top bar (logo square plus name, text links, orange "Give something" button) → hero split in two cells (headline, one short paragraph and two buttons on the left; photo on the right) → three numbered step cells → a "This is not a marketplace" strip with struck-through "Prices / Bidding / Selling / Delivery fees" → "Just posted" row of item cards → full-width orange closing banner with the footer links inside it.
+- **Placeholders:** where a photo has not loaded, use a `mist` block with thin diagonal lines and a small mono caption.
+- **Errors:** dark-red border plus a short helpful message below the field (e.g. "Choose where the item can be collected."); never color alone, add the message.
+- **Item card:** square photo, then a mono uppercase category label in `primary-ink` with the approximate area on the right, then the item name (and condition and age, e.g. "Good · 2 hours ago"). The card must still make clear the item is free: show a small mono "FREE" label. Never a price. (Open question for the owner: whether a FREE badge is wanted on every card, since the reference shows none.)
+- **Photos:** real daylight photos of the actual item, whole item first; black and white is fine for editorial images. WebP at 480 / 960 / 1440 px, lazy-loaded behind the placeholder. Use `next/image`.
+- **Contrast:** all text pairs must pass 4.5:1.
 
 ## Tech stack and conventions
 

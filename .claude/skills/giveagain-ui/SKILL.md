@@ -23,7 +23,7 @@ Check the installed versions' docs (framer-motion and swiper are new major versi
 
 1. Before writing UI, search `components/` for something that already does it. Extend it with a prop rather than copying it.
 2. If the same markup or logic appears **twice**, extract a component. Three similar blocks is always a missed component.
-3. Style through design tokens (`bg-primary`, `text-muted-foreground`, `rounded-lg`), never raw hex values or one-off spacing.
+3. Style through design tokens (`bg-primary`, `text-muted-foreground`, `border-line`); the design has no rounded corners, never raw hex values or one-off spacing.
 4. Keep components small, typed, and focused. Server Components by default; `"use client"` only where needed.
 
 ## Folder layout
@@ -98,7 +98,7 @@ Rules for these components:
 - Every page has loading (skeleton), empty and error states, using the shared `EmptyState` and shadcn `Skeleton`.
 - Semantic HTML (`main`, `nav`, headings in order, buttons vs links). Visible focus rings (`ring` token). All images have meaningful `alt` text (describe the item). Icon-only buttons have `aria-label`.
 - Contrast 4.5:1 minimum; never use color alone to convey status.
-- Use `next/image` for photos, `next/link` for navigation, `next/font` (Figtree) already set up.
+- Use `next/image` for photos, `next/link` for navigation, `next/font` (Archivo and JetBrains Mono) already set up.
 - Light theme only. No dark mode, no theme toggle, no `dark:` styling.
 
 ## Copy

@@ -1,0 +1,19 @@
+import { z } from "zod";
+import { CATEGORIES, CONDITIONS } from "@/constants/listing";
+import { DZONGKHAGS } from "@/constants/location";
+import { MAX_LISTING_PHOTOS } from "@/constants/images";
+import { phoneSchema } from "@/lib/phone";
+
+export const playgroundFormSchema = z.object({
+  title: z.string().trim().min(3, "Give the item a short name.").max(80, "Keep the name under 80 characters."),
+  category: z.enum(CATEGORIES, "Choose a category."),
+  dzongkhag: z.enum(DZONGKHAGS, "Choose where the item can be collected."),
+  condition: z.enum(CONDITIONS, "Choose the condition."),
+  description: z.string().trim().min(10, "Tell people a little more, at least 10 characters.").max(500, "Keep it under 500 characters."),
+  phone: phoneSchema,
+  photos: z.array(z.instanceof(File)).min(1, "Add at least one photo.").max(MAX_LISTING_PHOTOS),
+  agree: z.boolean().refine((value) => value, "Please confirm the item is free to take."),
+});
+
+export type PlaygroundFormInput = z.input<typeof playgroundFormSchema>;
+export type PlaygroundFormOutput = z.output<typeof playgroundFormSchema>;
