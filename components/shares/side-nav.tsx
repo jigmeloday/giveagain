@@ -10,11 +10,11 @@ type Tab = { label: string; href: string; badge?: number };
 const ITEM = "flex h-11 shrink-0 items-center gap-2 px-4 font-medium whitespace-nowrap";
 
 /** Side menu on wide screens, a scrolling row on phones. */
-export function AccountNav({ tabs }: { tabs: Tab[] }) {
+export function SideNav({ tabs, label }: { tabs: Tab[]; label: string }) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Account">
+    <nav aria-label={label}>
       <ul className="flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
         {tabs.map((tab) => {
           const current = pathname === tab.href || (tab.href !== "/account" && pathname.startsWith(`${tab.href}/`));

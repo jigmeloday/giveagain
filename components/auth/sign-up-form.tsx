@@ -20,7 +20,10 @@ export function SignUpForm({ next }: { next: string }) {
     schema: signUpSchema,
     defaultValues: { name: "", email: "", password: "", agree: false },
     submit: authActions.signUp,
-    onDone: () => router.push(next),
+    onDone: () => {
+      router.push(next);
+      router.refresh();
+    },
   });
   const { control, register, formState: { errors } } = form;
   const password = useWatch({ control, name: "password" });

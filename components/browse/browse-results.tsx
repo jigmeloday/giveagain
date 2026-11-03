@@ -4,19 +4,19 @@ import { BrowseSidebar } from "@/components/browse/browse-sidebar";
 import { EmptyResults } from "@/components/browse/empty-results";
 import { ItemGrid } from "@/components/shares/item-grid";
 import { ItemGridFallback } from "@/components/shares/item-grid-fallback";
-import { searchListings } from "@/lib/listings";
+import { getCategoryCounts, searchListings } from "@/lib/listings";
 import { parseFilters } from "@/lib/search-params";
 
 /** Reads the URL (search and filters), so render it inside Suspense. */
 export async function BrowseResults({ searchParams }: { searchParams: PageProps<"/browse">["searchParams"] }) {
   const filters = parseFilters(await searchParams);
-  const items = searchListings(filters);
+  const [items, counts] = await Promise.all([searchListings(filters), getCategoryCounts(filters)]);
 
   return (
     <>
       <BrowseHeader title={filters.dzongkhag ? `Free in ${filters.dzongkhag}` : "Free across Bhutan"} count={items.length} q={filters.q} />
       <div className="flex flex-col md:flex-row">
-        <BrowseSidebar filters={filters} />
+        <BrowseSidebar filters={filters} counts={counts} />
         <div className="min-w-0 flex-1">
           {items.length > 0 ? (
             <Suspense fallback={<ItemGridFallback />}>

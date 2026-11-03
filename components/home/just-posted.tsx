@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
-import { ItemGrid } from "@/components/shares/item-grid";
+import { LatestItems } from "@/components/home/latest-items";
 import { ItemGridFallback } from "@/components/shares/item-grid-fallback";
-import { latestListings } from "@/lib/listings";
 
 export function JustPosted() {
   return (
@@ -16,7 +15,7 @@ export function JustPosted() {
       </div>
       <div className="border-t border-line">
         <Suspense fallback={<ItemGridFallback />}>
-          <ItemGrid items={latestListings(4)} />
+          <LatestItems />
         </Suspense>
       </div>
     </section>

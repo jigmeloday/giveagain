@@ -5,11 +5,12 @@ import { ItemActions } from "@/components/item/item-actions";
 import { ItemFacts } from "@/components/item/item-facts";
 import { PostedAgo } from "@/components/item/posted-ago";
 import { askingLabel } from "@/lib/asking";
+import type { ViewerState } from "@/server/queries/listing-public";
 import type { Listing } from "@/types/listing";
 
 const CHIP = "inline-flex h-8 items-center px-3 text-sm";
 
-export function ItemSummary({ item }: { item: Listing }) {
+export function ItemSummary({ item, viewer }: { item: Listing; viewer: ViewerState }) {
   return (
     <div className="flex flex-col gap-6 p-6 sm:p-10">
       <div className="flex flex-wrap gap-2">
@@ -25,7 +26,7 @@ export function ItemSummary({ item }: { item: Listing }) {
       <ItemFacts {...item} />
       <p className="max-w-prose text-lg">{item.description}</p>
       <GiverCard giver={item.giver} />
-      <ItemActions id={item.id} giverName={item.giver.name} reserved={item.status === "reserved"} />
+      <ItemActions id={item.id} giverName={item.giver.name} reserved={item.status === "reserved"} viewer={viewer} />
     </div>
   );
 }

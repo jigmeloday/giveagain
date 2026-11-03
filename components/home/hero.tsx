@@ -1,4 +1,5 @@
 import { GiveButton } from "@/components/give/give-button";
+import { WhenSignedIn } from "@/components/give/when-signed-in";
 import { HeroSearch } from "@/components/home/hero-search";
 
 export function Hero() {
@@ -13,10 +14,12 @@ export function Hero() {
           </p>
         </div>
         <HeroSearch />
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <span className="text-sm text-muted-foreground">Have something to pass on?</span>
-          <GiveButton variant="outline" />
-        </div>
+        <WhenSignedIn>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="text-sm text-muted-foreground">Have something to pass on?</span>
+            <GiveButton variant="outline" />
+          </div>
+        </WhenSignedIn>
       </div>
     </section>
   );

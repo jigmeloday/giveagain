@@ -5,11 +5,11 @@ import { FilterSelect } from "@/components/browse/filter-select";
 import { SidebarHelp } from "@/components/browse/sidebar-help";
 import { CONDITIONS } from "@/constants/listing";
 import { DZONGKHAGS } from "@/constants/location";
-import { countByCategory } from "@/lib/listings";
 import type { ListingFilters } from "@/types/listing";
 
-export function BrowseSidebar({ filters }: { filters: ListingFilters }) {
-  const { all, byCategory } = countByCategory(filters);
+type Counts = { all: number; byCategory: { category: string; count: number }[] };
+
+export function BrowseSidebar({ filters, counts: { all, byCategory } }: { filters: ListingFilters; counts: Counts }) {
 
   return (
     <aside aria-label="Filters" className="border-b border-line md:w-80 md:shrink-0 md:border-r md:border-b-0">

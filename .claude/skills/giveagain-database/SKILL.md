@@ -71,3 +71,7 @@ Adjust as the product evolves, but keep rules like these in constraints.
 - Parameterized only, explicit columns, joins instead of loops, cursor pagination (see `giveagain-backend`).
 - Keep SQL in one `queries/<domain>.ts` file per domain, small functions, typed results.
 - Review changes for backup/restore impact; test that a restore works.
+
+## Prisma (tool only)
+
+Prisma 7 is installed for introspection and Studio only (`npm run prisma:pull`, `npm run prisma:studio`). `prisma/schema.prisma` is read from the live database; do not edit it or use it to change the database. **Never run `prisma migrate`, `db push` or `db update`**: schema changes go only through SQL files in `db/migrations/`. The app does not use Prisma Client.

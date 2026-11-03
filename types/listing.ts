@@ -28,9 +28,9 @@ export type Listing = {
 
 export type ListingFilters = {
   q?: string;
-  category?: string;
-  dzongkhag?: string;
-  condition?: string;
+  category?: Listing["category"];
+  dzongkhag?: Listing["dzongkhag"];
+  condition?: Listing["condition"];
 };
 
 export type ItemPhoto = {

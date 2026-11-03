@@ -6,8 +6,8 @@ import { PhotoPlaceholder } from "@/components/shares/photo-placeholder";
 import { getListing } from "@/lib/listings";
 
 export async function generateMetadata({ params }: PageProps<"/items/[id]">): Promise<Metadata> {
-  const item = getListing((await params).id);
-  return { title: item ? `${item.name} | GiveAgain` : "Item not found | GiveAgain" };
+  const found = await getListing((await params).id);
+  return { title: found ? `${found.listing.name} | GiveAgain` : "Item not found | GiveAgain" };
 }
 
 export default function ItemPage({ params }: PageProps<"/items/[id]">) {

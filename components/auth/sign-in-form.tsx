@@ -16,7 +16,10 @@ export function SignInForm({ next }: { next: string }) {
     schema: signInSchema,
     defaultValues: { email: "", password: "" },
     submit: authActions.signIn,
-    onDone: () => router.push(next),
+    onDone: () => {
+      router.push(next);
+      router.refresh();
+    },
   });
   const { register, formState: { errors } } = form;
 

@@ -1,0 +1,185 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../generated/prisma"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(6)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(6)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime  @db.Timestamptz(6)
+  user                  user      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([userId])
+}
+
+model audit_log {
+  id          BigInt   @id @default(autoincrement())
+  actor_id    String
+  action      String
+  target_type String
+  target_id   String
+  reason      String?
+  meta        Json?
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  user        user     @relation(fields: [actor_id], references: [id], onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)], map: "audit_log_created_idx")
+  @@index([target_type, target_id, created_at(sort: Desc)], map: "audit_log_target_idx")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model booking {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  listing_id   String   @unique(map: "booking_one_accepted_idx", where: raw("(status = 'accepted'::text)")) @db.Uuid
+  requester_id String
+  phone        String
+  note         String?
+  status       String   @default("requested")
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime @default(now()) @db.Timestamptz(6)
+  listing      listing  @relation(fields: [listing_id], references: [id], onUpdate: NoAction)
+  user         user     @relation(fields: [requester_id], references: [id], onUpdate: NoAction)
+
+  @@unique([listing_id, requester_id], map: "booking_one_active_per_user_idx", where: raw("(status <> 'cancelled'::text)"))
+  @@index([listing_id], map: "booking_listing_idx")
+  @@index([requester_id], map: "booking_requester_idx")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model listing {
+  id                              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner_id                        String
+  title                           String
+  description                     String
+  category                        String
+  condition                       String
+  dzongkhag                       String
+  area                            String
+  size                            String?
+  collection                      String?
+  heads_up                        String?
+  address_private                 String?
+  status                          String          @default("pending")
+  rejection_reason                String?
+  rejection_note                  String?
+  moderated_by                    String?
+  moderated_at                    DateTime?       @db.Timestamptz(6)
+  deleted_at                      DateTime?       @db.Timestamptz(6)
+  created_at                      DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at                      DateTime        @default(now()) @db.Timestamptz(6)
+  contact_phone                   String?
+  booking                         booking?
+  user_listing_moderated_byTouser user?           @relation("listing_moderated_byTouser", fields: [moderated_by], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  user_listing_owner_idTouser     user            @relation("listing_owner_idTouser", fields: [owner_id], references: [id], onUpdate: NoAction)
+  listing_photo                   listing_photo[]
+
+  @@index([created_at(sort: Desc), id], map: "listing_browse_idx", where: raw("((status = ANY (ARRAY['available'::text, 'reserved'::text])) AND (deleted_at IS NULL))"))
+  @@index([category, status], map: "listing_category_idx")
+  @@index([dzongkhag, status], map: "listing_dzongkhag_idx")
+  @@index([owner_id], map: "listing_owner_idx")
+  @@index([created_at, id], map: "listing_pending_idx", where: raw("((status = 'pending'::text) AND (deleted_at IS NULL))"))
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model listing_photo {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  listing_id String   @db.Uuid
+  key        String
+  position   Int      @db.SmallInt
+  width      Int?
+  height     Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  listing    listing  @relation(fields: [listing_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([listing_id, position])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model report {
+  id                            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reporter_id                   String
+  target_type                   String
+  target_id                     String
+  reason                        String
+  details                       String?
+  status                        String    @default("open")
+  resolved_by                   String?
+  resolved_at                   DateTime? @db.Timestamptz(6)
+  created_at                    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime  @default(now()) @db.Timestamptz(6)
+  user_report_reporter_idTouser user      @relation("report_reporter_idTouser", fields: [reporter_id], references: [id], onUpdate: NoAction)
+  user_report_resolved_byTouser user?     @relation("report_resolved_byTouser", fields: [resolved_by], references: [id], onDelete: Restrict, onUpdate: NoAction)
+
+  @@unique([reporter_id, target_type, target_id])
+  @@index([status, created_at], map: "report_status_idx")
+  @@index([target_type, target_id], map: "report_target_idx")
+}
+
+model schema_migrations {
+  name       String   @id
+  applied_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model session {
+  id             String   @id
+  expiresAt      DateTime @db.Timestamptz(6)
+  token          String   @unique
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @db.Timestamptz(6)
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  impersonatedBy String?
+  user           user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([userId])
+}
+
+model user {
+  id                                 String      @id
+  name                               String
+  email                              String      @unique
+  emailVerified                      Boolean
+  image                              String?
+  createdAt                          DateTime    @default(now()) @db.Timestamptz(6)
+  updatedAt                          DateTime    @default(now()) @db.Timestamptz(6)
+  role                               String?
+  banned                             Boolean?
+  banReason                          String?
+  banExpires                         DateTime?   @db.Timestamptz(6)
+  account                            account[]
+  audit_log                          audit_log[]
+  booking                            booking[]
+  listing_listing_moderated_byTouser listing[]   @relation("listing_moderated_byTouser")
+  listing_listing_owner_idTouser     listing[]   @relation("listing_owner_idTouser")
+  report_report_reporter_idTouser    report[]    @relation("report_reporter_idTouser")
+  report_report_resolved_byTouser    report[]    @relation("report_resolved_byTouser")
+  session                            session[]
+}
+
+model verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([identifier])
+}

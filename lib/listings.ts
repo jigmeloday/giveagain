@@ -1,36 +1,29 @@
-import { CATEGORIES } from "@/constants/listing";
-import { SAMPLE_LISTINGS } from "@/constants/sample-listings";
+import { TRPCError } from "@trpc/server";
+import { publicApi } from "@/server/public-api";
+import { serverCaller } from "@/server/caller";
 import type { Listing, ListingFilters } from "@/types/listing";
 
-/** Public data access. Swap the body for the public tRPC query once the API exists. */
-export function filterListings(listings: Listing[], { q, category, dzongkhag, condition }: ListingFilters): Listing[] {
-  const query = q?.trim().toLowerCase();
-  return listings.filter(
-    (item) =>
-      (!category || item.category === category) &&
-      (!dzongkhag || item.dzongkhag === dzongkhag) &&
-      (!condition || item.condition === condition) &&
-      (!query || `${item.name} ${item.description}`.toLowerCase().includes(query)),
-  );
+const PAGE_SIZE = 48;
+
+/** Public listing data for pages. Reads from the API; only approved listings ever come back. */
+export async function searchListings(filters: ListingFilters): Promise<Listing[]> {
+  return (await (await publicApi()).listing.list({ ...filters, limit: PAGE_SIZE })).items;
 }
 
-export function searchListings(filters: ListingFilters): Listing[] {
-  return filterListings(SAMPLE_LISTINGS, filters);
+export async function latestListings(count: number): Promise<Listing[]> {
+  return (await (await publicApi()).listing.list({ limit: count })).items;
 }
 
-export function latestListings(count: number): Listing[] {
-  return SAMPLE_LISTINGS.slice(0, count);
+export async function getCategoryCounts(filters: ListingFilters) {
+  return (await publicApi()).listing.categoryCounts(filters);
 }
 
-export function getListing(id: string): Listing | undefined {
-  return SAMPLE_LISTINGS.find((item) => item.id === id);
-}
-
-/** Counts per category for the filters, ignoring the chosen category so every option shows what it would give. */
-export function countByCategory(filters: ListingFilters, listings: Listing[] = SAMPLE_LISTINGS) {
-  const rest = filterListings(listings, { ...filters, category: undefined });
-  return {
-    all: rest.length,
-    byCategory: CATEGORIES.map((category) => ({ category, count: rest.filter((item) => item.category === category).length })),
-  };
+/** One public item plus what the signed-in visitor can do with it, or null when it isn't public. */
+export async function getListing(id: string) {
+  try {
+    return await (await serverCaller()).listing.byId({ id });
+  } catch (error) {
+    if (error instanceof TRPCError && (error.code === "NOT_FOUND" || error.code === "BAD_REQUEST")) return null;
+    throw error;
+  }
 }
