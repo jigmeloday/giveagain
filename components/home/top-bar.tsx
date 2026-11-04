@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AccountLink } from "@/components/home/account-link";
 import { GiveButton } from "@/components/give/give-button";
+import { WhenSignedIn } from "@/components/give/when-signed-in";
 import { NAV_LINKS } from "@/constants/home";
 
 export function TopBar() {
@@ -20,7 +21,9 @@ export function TopBar() {
         <Suspense fallback={null}>
           <AccountLink />
         </Suspense>
-        <GiveButton>Give something</GiveButton>
+        <WhenSignedIn>
+          <GiveButton>Give something</GiveButton>
+        </WhenSignedIn>
       </nav>
     </header>
   );

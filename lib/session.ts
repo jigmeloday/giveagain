@@ -1,6 +1,5 @@
 import "server-only";
-import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
+import { getAuthSession, getFreshAuthSession } from "@/server/session";
 import type { User } from "@/types/account";
 
 const DEFAULT_SETTINGS: User["settings"] = {
@@ -10,9 +9,12 @@ const DEFAULT_SETTINGS: User["settings"] = {
 
 export type Session = { user: User; role: "user" | "admin" };
 
-/** The signed-in user, or null (also null when suspended). Reads cookies, so callers sit inside Suspense. */
-export async function getSession(): Promise<Session | null> {
-  const session = await auth.api.getSession({ headers: await headers() });
+/**
+ * The signed-in user, or null (also null when suspended). Reads cookies, so callers sit inside Suspense.
+ * Pass `fresh` where a suspension must apply immediately (the admin area).
+ */
+export async function getSession({ fresh = false }: { fresh?: boolean } = {}): Promise<Session | null> {
+  const session = await (fresh ? getFreshAuthSession() : getAuthSession());
   if (!session || session.user.banned) return null;
   const { id, name, email, role } = session.user;
   const [firstName, ...rest] = name.trim().split(/\s+/);

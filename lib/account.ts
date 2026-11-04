@@ -2,6 +2,11 @@ import { TRPCError } from "@trpc/server";
 import { serverCaller } from "@/server/caller";
 import type { MyBooking, MyListing } from "@/types/account";
 
+/** How many requests are waiting for the giver's answer (for the menu badge). */
+export async function getOpenRequestCount(): Promise<number> {
+  return (await serverCaller()).account.openRequestCount();
+}
+
 /** Account data for pages. Everything is scoped to the signed-in user by the API. */
 export async function getMyListings(): Promise<MyListing[]> {
   return (await serverCaller()).account.myListings();

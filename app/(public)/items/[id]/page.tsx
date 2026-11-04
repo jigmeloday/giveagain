@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ItemDetail } from "@/components/item/item-detail";
 import { ItemPageCrumbs } from "@/components/item/item-page-crumbs";
-import { PhotoPlaceholder } from "@/components/shares/photo-placeholder";
+import { ItemSkeleton } from "@/components/skeletons/item-skeleton";
 import { getListing } from "@/lib/listings";
 
 export async function generateMetadata({ params }: PageProps<"/items/[id]">): Promise<Metadata> {
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PageProps<"/items/[id]">): Pr
 export default function ItemPage({ params }: PageProps<"/items/[id]">) {
   return (
     <main>
-      <Suspense fallback={<PhotoPlaceholder caption="Loading" className="m-6 h-64 sm:m-10" />}>
+      <Suspense fallback={<ItemSkeleton />}>
         <ItemPageCrumbs params={params} />
         <ItemDetail params={params} />
       </Suspense>

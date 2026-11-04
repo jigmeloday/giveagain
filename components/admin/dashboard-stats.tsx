@@ -1,9 +1,9 @@
 import { StatTile } from "@/components/admin/stat-tile";
 import { formatDate } from "@/lib/format";
-import { serverCaller } from "@/server/caller";
+import { getDashboard } from "@/lib/dashboard";
 
 export async function DashboardStats() {
-  const s = await (await serverCaller()).admin.dashboard();
+  const s = await getDashboard();
 
   return (
     <div className="grid gap-4 p-4 sm:grid-cols-2 sm:p-8 xl:grid-cols-3">

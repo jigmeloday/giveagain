@@ -65,3 +65,20 @@ describe("my requests", () => {
     expect(await callerFor(seeker).account.myBookings()).toHaveLength(1);
   });
 });
+
+describe("the waiting-requests badge", () => {
+  it("counts only this giver's requests that are still waiting", async () => {
+    const other = await makeUser();
+    const theirs = await makeListing(other.id, { status: "available" });
+    await makeBooking(theirs, seeker.id);
+    await makeBooking(listing, seeker.id);
+    await makeBooking(listing, other.id, { status: "declined" });
+    expect(await callerFor(owner).account.openRequestCount()).toBe(1);
+    expect(await callerFor(other).account.openRequestCount()).toBe(1);
+    expect(await callerFor(seeker).account.openRequestCount()).toBe(0);
+  });
+
+  it("needs sign-in", async () => {
+    await expect(callerFor(null).account.openRequestCount()).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+  });
+});

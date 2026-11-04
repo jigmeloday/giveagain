@@ -9,6 +9,10 @@ import type { BetterAuthOptions } from "better-auth";
 export function authOptions(database: BetterAuthOptions["database"]) {
   return {
     database,
+    // Pages read a signed copy of the session from a cookie for up to a minute instead of asking the database on every
+    // request (each trip is ~330 ms from Bhutan to Neon). Anything that changes data, and the admin area, still checks
+    // the database every time (see server/session.ts), so a suspension takes effect immediately there.
+    session: { cookieCache: { enabled: true, maxAge: 60 } },
     emailAndPassword: { enabled: true, minPasswordLength: 8, maxPasswordLength: 128 },
     // `role` defaults to "user" and clients can never set it; `banned` is how suspension blocks sign-in and sessions.
     plugins: [admin({ defaultRole: "user", adminRoles: ["admin"] }), nextCookies()],

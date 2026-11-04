@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { SideMenuLayout } from "@/components/shares/side-menu-layout";
-import { countOpenRequests, getMyListings } from "@/lib/account";
+import { getOpenRequestCount } from "@/lib/account";
 import { getSession } from "@/lib/session";
 
 /** Signed-in area: checks the session, then shows the side menu. Reads the session, so render inside Suspense. */
 export async function AccountFrame({ children }: { children: React.ReactNode }) {
   const session = await getSession();
   if (!session) redirect("/sign-in?next=/account");
-  const openRequests = countOpenRequests(await getMyListings());
+  const openRequests = await getOpenRequestCount();
 
   return (
     <SideMenuLayout

@@ -14,7 +14,7 @@ export function Hero() {
           </p>
         </div>
         <HeroSearch />
-        <WhenSignedIn>
+        <WhenSignedIn fallback={<div className="h-11" />}>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span className="text-sm text-muted-foreground">Have something to pass on?</span>
             <GiveButton variant="outline" />

@@ -1,5 +1,5 @@
-import { PageLoading } from "@/components/shares/page-loading";
+import { StatsSkeleton } from "@/components/skeletons/stats-skeleton";
 
 export default function Loading() {
-  return <PageLoading />;
+  return <StatsSkeleton />;
 }

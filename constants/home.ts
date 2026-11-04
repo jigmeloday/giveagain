@@ -14,7 +14,6 @@ export const NOT_FOR_SALE = ["Prices", "Bidding", "Selling", "Delivery fees"] as
 export const FOOTER_LINKS = [
   { label: "Browse", href: "/browse" },
   { label: "How it works", href: "/how-it-works" },
-  { label: "Sign in", href: "/sign-in" },
 ] as const;
 
 export const QUICK_CATEGORIES = ["Furniture", "Books", "Kitchen", "Clothing", "Kids"] as const;

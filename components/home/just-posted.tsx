@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
 import { LatestItems } from "@/components/home/latest-items";
-import { ItemGridFallback } from "@/components/shares/item-grid-fallback";
+import { ItemGridSkeleton } from "@/components/skeletons/item-grid-skeleton";
 
 export function JustPosted() {
   return (
@@ -14,7 +14,7 @@ export function JustPosted() {
         </Link>
       </div>
       <div className="border-t border-line">
-        <Suspense fallback={<ItemGridFallback />}>
+        <Suspense fallback={<ItemGridSkeleton />}>
           <LatestItems />
         </Suspense>
       </div>

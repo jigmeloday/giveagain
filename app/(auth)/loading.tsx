@@ -1,5 +1,5 @@
-import { AuthFallback } from "@/components/auth/auth-fallback";
+import { AuthSkeleton } from "@/components/skeletons/auth-skeleton";
 
 export default function Loading() {
-  return <AuthFallback />;
+  return <AuthSkeleton />;
 }

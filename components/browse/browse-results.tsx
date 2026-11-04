@@ -3,7 +3,7 @@ import { BrowseHeader } from "@/components/browse/browse-header";
 import { BrowseSidebar } from "@/components/browse/browse-sidebar";
 import { EmptyResults } from "@/components/browse/empty-results";
 import { ItemGrid } from "@/components/shares/item-grid";
-import { ItemGridFallback } from "@/components/shares/item-grid-fallback";
+import { ItemGridSkeleton } from "@/components/skeletons/item-grid-skeleton";
 import { getCategoryCounts, searchListings } from "@/lib/listings";
 import { parseFilters } from "@/lib/search-params";
 
@@ -19,7 +19,7 @@ export async function BrowseResults({ searchParams }: { searchParams: PageProps<
         <BrowseSidebar filters={filters} counts={counts} />
         <div className="min-w-0 flex-1">
           {items.length > 0 ? (
-            <Suspense fallback={<ItemGridFallback />}>
+            <Suspense fallback={<ItemGridSkeleton count={8} />}>
               <ItemGrid items={items} className="grid grid-cols-2 gap-x-4 gap-y-8 p-4 sm:grid-cols-3 sm:p-8 lg:grid-cols-3 xl:grid-cols-4" />
             </Suspense>
           ) : (

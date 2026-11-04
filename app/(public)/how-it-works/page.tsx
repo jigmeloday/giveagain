@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { GiveButton } from "@/components/give/give-button";
+import { WhenSignedIn } from "@/components/give/when-signed-in";
 import { Faq } from "@/components/how/faq";
 import { Safety } from "@/components/how/safety";
 import { StepList } from "@/components/how/step-list";
@@ -30,7 +31,9 @@ export default function HowItWorksPage() {
       <Safety />
       <Faq />
       <section className="flex flex-col gap-3 p-6 sm:flex-row sm:p-10">
-        <GiveButton size="lg" />
+        <WhenSignedIn fallback={<div className="h-12 w-64" />}>
+          <GiveButton size="lg" />
+        </WhenSignedIn>
         <Link href="/browse" className={buttonVariants({ size: "lg", variant: "outline" })}>
           See what&rsquo;s free nearby
           <ArrowRight aria-hidden />

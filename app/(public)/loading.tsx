@@ -1,5 +1,5 @@
-import { PhotoPlaceholder } from "@/components/shares/photo-placeholder";
+import { PageSkeleton } from "@/components/skeletons/page-skeleton";
 
 export default function Loading() {
-  return <PhotoPlaceholder caption="Loading" className="m-6 h-64 sm:m-10" />;
+  return <PageSkeleton />;
 }
